@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const notAClient = require('./Client');
+const client = new notAClient({ token: process.env.TOKEN, prefix: process.env.PREFIX });
 const fs = require('fs');
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -14,19 +15,20 @@ for (const file of commandFiles) {
 
 const cooldowns = new Discord.Collection();
 
-const TOKEN = process.env.TOKEN;
-const prefix = process.env.PREFIX;
+const AUTHORIZED_SERVER = ['593869491029409815', '697756823729471498'];
+
+
+const prefix = client.config.prefix;
 console.info(prefix);
 
-client.login(TOKEN);
 
 client.once('ready', () => {
 	console.info(`Logged in as ${client.user.tag}!`);
 });
 
 
-client.on('message', message => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
+client.on('message', async message => {
+	if (!message.content.startsWith(prefix) || message.author.bot || !AUTHORIZED_SERVER.includes(message.guild.id)) return;
 
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
@@ -75,10 +77,12 @@ client.on('message', message => {
 
 
 	try {
-		command.execute(message, args);
+		await command.execute(message, args);
 	}
 	catch (error) {
 		console.error(error);
 		message.reply('there was an error trying to execute that command!');
 	}
 });
+
+client.login(client.config.token);

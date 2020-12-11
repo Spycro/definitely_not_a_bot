@@ -4,13 +4,18 @@
   "description": "Discord bot for SitePoint",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
   "author": "Michiel Mulders",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.5.1",
+    "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "eslint": "^6.8.0"
+    "eslint": "^7.14.0",
+    "ffmpeg": "^0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "opusscript": "^0.0.7",
+    "sodium": "^3.0.2",
+    "ytdl-core": "^4.1.4"
   }
 }
