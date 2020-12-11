@@ -35,6 +35,7 @@ module.exports = {
 			songs: [],
 			volume: 2,
 			playing: true,
+			looping: false,
 		};
 		message.client.queue.set(message.guild.id, queueConstruct);
 		queueConstruct.songs.push(song);
@@ -49,8 +50,13 @@ module.exports = {
 
 			const dispatcher = queue.connection.play(ytdl(song.url))
 				.on('finish', () => {
-					queue.songs.shift();
-					play(queue.songs[0]);
+					if(!queue.looping) {
+						queue.songs.shift();
+						play(queue.songs[0]);
+					}
+					else{
+						play(queue.songs[0]);
+					}
 				})
 				.on('error', error => console.error(error));
 			dispatcher.setVolumeLogarithmic(queue.volume / 5);
