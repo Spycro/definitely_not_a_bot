@@ -8,5 +8,12 @@ module.exports = {
 		if (!serverQueue) return message.channel.send('There is nothing playing that I could loop for you.');
 
 		serverQueue.looping = !serverQueue.looping;
+
+		if(serverQueue.looping) {
+			return message.channel.send('Looping : **enabled**');
+		}
+		else{
+			return message.channel.send('Looping : **disabled**');
+		}
 	},
 };

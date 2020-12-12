@@ -17,7 +17,7 @@ module.exports = {
 		const serverQueue = message.client.queue.get(message.guild.id);
 		const songInfo = await ytdl.getInfo(args[0].replace(/<(.+)>/g, '$1'));
 		const song = {
-			id: songInfo.videoDetails.video_id,
+			id: songInfo.videoDetails.videoId,
 			title: Util.escapeMarkdown(songInfo.videoDetails.title),
 			url: songInfo.videoDetails.video_url,
 		};
