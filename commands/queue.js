@@ -15,7 +15,12 @@ module.exports = {
 		let songsList = '';
 		let i = 1;
 		serverQueue.songs.forEach(song => {
-			songsList += `${i}. ${song.title}\n`;
+			if (i === 1) {
+				songsList += `${i}. ${song.title} **(playing)**\n`;
+			}
+			else {
+				songsList += `${i}. ${song.title}\n`;
+			}
 			i++;
 		});
 		queueEmbed.setDescription(songsList);

@@ -16,6 +16,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "opusscript": "^0.0.7",
     "sodium": "^3.0.2",
+    "yt-search": "^2.5.1",
     "ytdl-core": "^4.1.4"
   }
 }

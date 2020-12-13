@@ -6,7 +6,7 @@ module.exports = {
 	description: 'Play command.',
 	usage: '[command name]',
 	args: true,
-	cooldown: 5,
+	cooldown: 1,
 	async execute(message, args) {
 		const { channel } = message.member.voice;
 		if (!channel) return message.channel.send('I\'m sorry but you need to be in a voice channel to play music!');
