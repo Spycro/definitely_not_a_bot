@@ -52,6 +52,11 @@ const playMusic = async (song, message) => {
 	try {
 		const connection = await channel.join();
 		queueConstruct.connection = connection;
+		queueConstruct.connection.on('disconnect', (event) => {
+			console.log(event);
+			console.log('Bot got diconnected');
+			message.client.queue.delete(message.guild.ig);
+		});
 		play(queueConstruct.songs[0]);
 	}
 	catch (error) {
