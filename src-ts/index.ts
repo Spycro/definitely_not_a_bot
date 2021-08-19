@@ -34,7 +34,7 @@ client.on('message', async (message) => {
 	if (!message.content.startsWith(client.prefix) || message.author.bot || !AUTHORIZED_SERVER.includes(message.guild!.id)) return;
 
 	const args = message.content.slice(client.prefix.length).split(/ +/);
-	if(!args) throw Error()
+	if(!args) return;
 	const commandName = args.shift();
 	// message like : '!'
 	if(!commandName) { return ; }
