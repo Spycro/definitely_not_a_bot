@@ -2,12 +2,12 @@
 	"compilerOptions": {
 		"outDir": "./built",
 		"allowJs": true,
-		"target": "ES2015",
+		"target": "ES6",
 		"module": "commonjs",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
 	  },
-	"include": ["./src-ts/**/*"]
+	"include": ["./src/**/*"]
 }

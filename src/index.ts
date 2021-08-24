@@ -1,27 +1,13 @@
-require('dotenv').config();
-import Discord, { Intents } from 'discord.js';
+import dotenv from 'dotenv'
+import { Intents, Interaction } from 'discord.js';
 import NotAClient from './Client';
-import fs from 'fs';
+import { deployCommands } from './deploy-commands';
+dotenv.config();
 
 const client = new NotAClient({intents: [Intents.FLAGS.GUILDS]});
-
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-
-	// set a new item in the Collection
-	// with the key as the command name and the value as the exported module
-	client.commands.set(command.name, command);
-}
-
-const cooldowns = new Discord.Collection();
-
 const AUTHORIZED_SERVER = ['593869491029409815', '697756823729471498'];
 
-client.prefix = process.env.PREFIX || '!';
-console.info(client.prefix);
+deployCommands();
 
 
 client.once('ready', () => {
@@ -29,7 +15,7 @@ client.once('ready', () => {
 });
 
 
-
+/*
 client.on('message', async (message) => {
 	if (!message.content.startsWith(client.prefix) || message.author.bot || !AUTHORIZED_SERVER.includes(message.guild!.id)) return;
 
@@ -91,5 +77,16 @@ client.on('message', async (message) => {
 	// 	message.reply('there was an error trying to execute that command!');
 	// }
 });
+*/
+
+
+client.on('interactionCreate', (interaction: Interaction) => {
+	if(!interaction.isCommand()) return;
+
+	if(interaction.commandName == "ping") {
+		interaction.reply("pong!");
+	}
+	
+})
 
 client.login(process.env.TOKEN);
