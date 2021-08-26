@@ -2,8 +2,8 @@ import { Client, ClientOptions, Collection } from 'discord.js';
 
 class NotAClient extends Client {
 
-	private _queue: Map<any,any>;
-	private _commands: Collection<any,any>;
+	private _queue: Map<string,any>;
+	private _commands: Collection<string,Function>;
 
 	constructor(config: ClientOptions) {
 		super(config);

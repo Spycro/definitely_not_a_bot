@@ -1,18 +1,23 @@
 import fs from 'fs';
 import { REST } from '@discordjs/rest';
 import { APIApplicationCommandOption, Routes } from 'discord-api-types/v9';
-import { pingCommand } from './commands/ping';
+import { Command } from './command';
 
 const devServId = '697756823729471498'
 const CLIENT_ID = "697756721124212746"
-const deployCommands = () => {
-
+const deployCommands = async () => {
     const commands: Array<{
         name: string;
         description: string;
         options: APIApplicationCommandOption[];
     }> = []
-    commands.push(pingCommand.toJSON());
+
+    const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.ts'));
+    for (const file of commandFiles) {
+        const command = await import(`./commands/${file.substring(0,file.length-3)}`);
+        commands.push(command.default.command.toJSON());
+        console.log(`imported : ${file}`);
+    }
 
     if (!process.env.TOKEN) throw Error("Specify TOKEN") 
     const rest = new REST({ version: '9'}).setToken(process.env.TOKEN);

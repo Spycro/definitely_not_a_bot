@@ -1,8 +1,10 @@
 import dotenv from 'dotenv'
+import fs from 'fs';
 import { Intents, Interaction } from 'discord.js';
 import NotAClient from './Client';
 import { deployCommands } from './deploy-commands';
 dotenv.config();
+
 
 const client = new NotAClient({intents: [Intents.FLAGS.GUILDS]});
 const AUTHORIZED_SERVER = ['593869491029409815', '697756823729471498'];
@@ -10,8 +12,17 @@ const AUTHORIZED_SERVER = ['593869491029409815', '697756823729471498'];
 deployCommands();
 
 
-client.once('ready', () => {
+client.once('ready', async () => {
 	console.info(`Logged in as ${client.user!.tag}!`);
+	// Load commands into client commands collection
+	const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.ts'));
+    for (const file of commandFiles) {
+        const command = await import(`./commands/${file.substring(0,file.length-3)}`);
+        client.commands.set(command.default.command.name, command.default.execute);
+    }
+
+	client.queue.set('test key', 'test value');
+
 });
 
 
@@ -80,12 +91,19 @@ client.on('message', async (message) => {
 */
 
 
-client.on('interactionCreate', (interaction: Interaction) => {
+client.on('interactionCreate', async (interaction: Interaction) => {
 	if(!interaction.isCommand()) return;
 
-	if(interaction.commandName == "ping") {
-		interaction.reply("pong!");
+	const command = client.commands.get(interaction.commandName);
+	if(!command) return;
+	
+	try{
+		await command(interaction);
+	} catch(error){
+		console.error(error);
+		await interaction.reply({ content: 'There was an error', ephemeral: true});
 	}
+	
 	
 })
 
